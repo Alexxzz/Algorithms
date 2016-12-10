@@ -1,5 +1,3 @@
-package com.company;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -211,19 +209,145 @@ class DequeTest {
     }
 
     /**
-     * Remove first.
+     * Add/Remove first.
      */
     @Test
-    void removeFirst_in_three_elmDeque() {
+    void addRemoveFirst() {
         String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
 
         Deque<String> sut = new Deque<>();
         sut.addFirst(firstElm);
-        sut.addFirst("test 2");
-        sut.addFirst("test 3");
+        sut.addFirst(secondElm);
+        sut.addFirst(thirdElm);
 
         String elm = sut.removeFirst();
+        assertEquals(elm, thirdElm);
 
+        elm = sut.removeFirst();
+        assertEquals(elm, secondElm);
+
+        elm = sut.removeFirst();
+        assertEquals(elm, firstElm);
+    }
+
+    /**
+     * Add/Remove last.
+     */
+    @Test
+    void addRemoveLast() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+        sut.addLast(firstElm);
+        sut.addLast(secondElm);
+        sut.addLast(thirdElm);
+
+        String elm = sut.removeLast();
+        assertEquals(elm, thirdElm);
+
+        elm = sut.removeLast();
+        assertEquals(elm, secondElm);
+
+        elm = sut.removeLast();
+        assertEquals(elm, firstElm);
+    }
+
+    /**
+     * Add first, Remove last.
+     */
+    @Test
+    void addFirst_removeLast() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+
+        sut.addFirst(firstElm);
+        String elm = sut.removeLast();
         assertEquals(firstElm, elm);
+
+        sut.addFirst(secondElm);
+        elm = sut.removeLast();
+        assertEquals(secondElm, elm);
+
+        sut.addFirst(thirdElm);
+        elm = sut.removeLast();
+        assertEquals(thirdElm, elm);
+
+        assertTrue(sut.isEmpty());
+    }
+
+    @Test
+    void addFirstX3_removeLastX3() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+
+        sut.addFirst(firstElm);
+        sut.addFirst(secondElm);
+        sut.addFirst(thirdElm);
+
+        String dequeElm1 = sut.removeLast();
+        String dequeElm2 = sut.removeLast();
+        String dequeElm3 = sut.removeLast();
+
+        assertEquals(firstElm, dequeElm1);
+        assertEquals(secondElm, dequeElm2);
+        assertEquals(thirdElm, dequeElm3);
+
+        assertTrue(sut.isEmpty());
+    }
+
+    @Test
+    void addLast_removeFirst() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+
+        sut.addLast(firstElm);
+        String elm = sut.removeFirst();
+        assertEquals(firstElm, elm);
+
+        sut.addLast(secondElm);
+        elm = sut.removeFirst();
+        assertEquals(secondElm, elm);
+
+        sut.addLast(thirdElm);
+        elm = sut.removeFirst();
+        assertEquals(thirdElm, elm);
+
+        assertTrue(sut.isEmpty());
+    }
+
+    @Test
+    void addLastX3_removeFirstX3() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+
+        sut.addLast(firstElm);
+        sut.addLast(secondElm);
+        sut.addLast(thirdElm);
+
+        String dequeElm1 = sut.removeFirst();
+        String dequeElm2 = sut.removeFirst();
+        String dequeElm3 = sut.removeFirst();
+
+        assertEquals(firstElm, dequeElm1);
+        assertEquals(secondElm, dequeElm2);
+        assertEquals(thirdElm, dequeElm3);
+
+        assertTrue(sut.isEmpty());
     }
 }
