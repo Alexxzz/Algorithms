@@ -283,6 +283,17 @@ class DequeTest {
     }
 
     @Test
+    void addFirst_removeFirst_addFirst_removeLast() {
+        Deque<Integer> sut = new Deque<>();
+
+        sut.addFirst(0);
+        assertEquals(0, (int)sut.removeFirst());
+
+        sut.addFirst(2);
+        assertEquals(2, (int)sut.removeLast());
+    }
+
+    @Test
     void addFirstX3_removeLastX3() {
         String firstElm = "test 1";
         String secondElm = "test 2";

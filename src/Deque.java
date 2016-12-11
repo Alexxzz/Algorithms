@@ -1,6 +1,3 @@
-import edu.princeton.cs.algs4.Queue;
-import edu.princeton.cs.algs4.Stack;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -65,6 +62,7 @@ public class Deque<Item> implements Iterable<Item> {
         Node removedNode = first;
         first = first.next;
         if (first != null) first.previous = null;
+        else last = null;
 
         return removedNode.item;
     }
@@ -78,6 +76,7 @@ public class Deque<Item> implements Iterable<Item> {
         Node removedNode = last;
         last = last.previous;
         if (last != null) last.next = null;
+        else first = null;
 
         return removedNode.item;
     }
