@@ -1,7 +1,24 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
+    private int size = 0;
+    private Node first, last;
+
+    private class Node {
+        private Item item;
+        private Node next;
+        private Node previous;
+
+        public Node(Item element, Node next, Node previous) {
+            this.item = element;
+            this.next = next;
+            this.previous = previous;
+        }
+    }
+
     // construct an empty randomized queue
     public RandomizedQueue() {
 
@@ -9,27 +26,59 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // is the queue empty?
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     // return the number of items on the queue
     public int size() {
-        return 0;
+        return size;
     }
 
     // add the item
     public void enqueue(Item item) {
-        throw new NullPointerException();
+        if (item == null) throw new NullPointerException();
+
+        Node newElement = new Node(item, null, last);
+        if (first == null) { first = newElement; }
+        else { last.next = newElement; }
+        last = newElement;
+
+        size++;
     }
 
     // remove and return a random item
     public Item dequeue() {
-        throw new NoSuchElementException();
+        if (isEmpty()) throw new NoSuchElementException();
+
+        int randomIdx = StdRandom.uniform(size);
+
+        return removeAt(randomIdx).item;
+    }
+
+    private Node removeAt(int index) {
+        Node node = nodeAt(index);
+
+        if (node.previous != null) { node.previous.next = node.next; }
+        else { first = node.next; }
+
+        size--;
+
+        return node;
+    }
+
+    private Node nodeAt(int index) {
+        Node node = first;
+        for (int i = 1; i < index; i++) { node = node.next; }
+        return node;
     }
 
     // return (but do not remove) a random item
     public Item sample() {
-        throw new NoSuchElementException();
+        if (isEmpty()) throw new NoSuchElementException();
+
+        int randomIdx = StdRandom.uniform(size);
+
+        return nodeAt(randomIdx).item;
     }
 
     // return an independent iterator over items in random order

@@ -1,9 +1,14 @@
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Randomized queue test.
+ */
 public class RandomizedQueueTest {
     /**
      * Exceptions.
@@ -56,5 +61,157 @@ public class RandomizedQueueTest {
             sut.iterator().next();
             fail("Should throw NoSuchElementException when calling next on iterator in empty queue");
         } catch (NoSuchElementException ignored) { }
+    }
+
+    /**
+     * size, isEmpty().
+     */
+    @Test
+    void isEmpty_on_empty() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        assertTrue(sut.isEmpty());
+    }
+
+    @Test
+    void size_on_empty() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        assertEquals(0, sut.size());
+    }
+
+    @Test
+    void isEmpty_on_not_empty() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+
+        assertFalse(sut.isEmpty());
+    }
+
+    @Test
+    void size_on_not_empty() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        assertEquals(0, sut.size());
+
+        sut.enqueue(0);
+        assertEquals(1, sut.size());
+
+        sut.enqueue(1);
+        assertEquals(2, sut.size());
+    }
+
+
+    /**
+     * Enqueue/dequeue.
+     */
+    @Test
+    void enqueue_dequeue_on_empty() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(0);
+        int res = sut.dequeue();
+
+        assertEquals(0, res);
+    }
+
+    @Test
+    void enqueue_x3_dequeue_x3() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+
+        ArrayList<Integer> res = new ArrayList<>();
+        res.add(sut.dequeue());
+        res.add(sut.dequeue());
+        res.add(sut.dequeue());
+
+        assertTrue(res.contains(1));
+        assertTrue(res.contains(2));
+        assertTrue(res.contains(3));
+    }
+
+    @Test
+    void dequeue_decreases_size() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+
+        assertEquals(3, sut.size());
+
+        sut.dequeue();
+        assertEquals(2, sut.size());
+
+        sut.dequeue();
+        assertEquals(1, sut.size());
+
+        sut.dequeue();
+        assertEquals(0, sut.size());
+
+        assertTrue(sut.isEmpty());
+    }
+
+    /**
+     * Sample.
+     */
+    @Test
+    void enqueue_sample() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+
+        int res = sut.sample();
+        assertEquals(1, res);
+    }
+
+    @Test
+    void sample_does_not_removes_items() {
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+
+        int res = sut.sample();
+        assertEquals(1, res);
+
+        assertEquals(1, sut.size());
+        assertFalse(sut.isEmpty());
+    }
+
+    /**
+     * Randomized dequeue.
+     */
+    @Test
+    void randomized_dequeue() {
+        // Should probably be a part of RandomizedQueue interface
+        StdRandom.setSeed(42);
+
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+
+        int res = sut.dequeue();
+        assertNotEquals(1, res);
+    }
+
+    @Test
+    void randomized_sample() {
+        // Should probably be a part of RandomizedQueue interface
+        StdRandom.setSeed(42);
+
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+
+        int res = sut.sample();
+        assertNotEquals(1, res);
     }
 }
