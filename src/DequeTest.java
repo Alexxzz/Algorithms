@@ -350,4 +350,76 @@ class DequeTest {
 
         assertTrue(sut.isEmpty());
     }
+
+    /**
+     * Testin Iterable interface.
+     */
+    @Test
+    void iterating_after_addFirst() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+        sut.addFirst(firstElm);
+        sut.addFirst(secondElm);
+        sut.addFirst(thirdElm);
+
+        String[] dequedElmenets = new String[3];
+        int idx = 0;
+        for (String elm : sut) {
+            dequedElmenets[idx] = elm;
+            idx++;
+        }
+
+        assertEquals(thirdElm, dequedElmenets[0]);
+        assertEquals(secondElm, dequedElmenets[1]);
+        assertEquals(firstElm, dequedElmenets[2]);
+    }
+
+    @Test
+    void iterating_after_addLast() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+        sut.addLast(firstElm);
+        sut.addLast(secondElm);
+        sut.addLast(thirdElm);
+
+        String[] dequedElmenets = new String[3];
+        int idx = 0;
+        for (String elm : sut) {
+            dequedElmenets[idx] = elm;
+            idx++;
+        }
+
+        assertEquals(firstElm, dequedElmenets[0]);
+        assertEquals(secondElm, dequedElmenets[1]);
+        assertEquals(thirdElm, dequedElmenets[2]);
+    }
+
+    @Test
+    void iterating_after_maixed_addFirst_addLast() {
+        String firstElm = "test 1";
+        String secondElm = "test 2";
+        String thirdElm = "test 3";
+
+        Deque<String> sut = new Deque<>();
+        sut.addFirst(firstElm);
+        sut.addLast(secondElm);
+        sut.addFirst(thirdElm);
+
+        String[] dequedElmenets = new String[3];
+        int idx = 0;
+        for (String elm : sut) {
+            dequedElmenets[idx] = elm;
+            idx++;
+        }
+
+        assertEquals(thirdElm, dequedElmenets[0]);
+        assertEquals(firstElm, dequedElmenets[1]);
+        assertEquals(secondElm, dequedElmenets[2]);
+    }
 }
