@@ -10,12 +10,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private class Node {
         private Item item;
         private Node next;
-        private Node previous;
 
-        public Node(Item element, Node next, Node previous) {
+        public Node(Item element, Node next) {
             this.item = element;
             this.next = next;
-            this.previous = previous;
         }
     }
 
@@ -38,7 +36,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         if (item == null) throw new NullPointerException();
 
-        Node newElement = new Node(item, null, last);
+        Node newElement = new Node(item, null);
         if (first == null) { first = newElement; }
         else { last.next = newElement; }
         last = newElement;
@@ -51,15 +49,28 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty()) throw new NoSuchElementException();
 
         int randomIdx = StdRandom.uniform(size);
+        Node node = removeAt(randomIdx);
 
-        return removeAt(randomIdx).item;
+        if (isEmpty()) {
+            first = null;
+            last = null;
+        }
+
+        return node.item;
     }
 
     private Node removeAt(int index) {
-        Node node = nodeAt(index);
+        Node node = first, previous = null;
+        for (int i = 1; i <= index; i++) {
+            previous = node;
+            node = node.next;
+        }
 
-        if (node.previous != null) { node.previous.next = node.next; }
-        else { first = node.next; }
+        if (previous != null) {
+            previous.next = node.next;
+
+            if (node == last) { last = previous; }
+        } else { first = node.next; }
 
         size--;
 
@@ -68,7 +79,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private Node nodeAt(int index) {
         Node node = first;
-        for (int i = 1; i < index; i++) { node = node.next; }
+        for (int i = 1; i <= index; i++) {
+            node = node.next;
+        }
         return node;
     }
 
@@ -87,14 +100,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
-        @Override
-        public boolean hasNext() {
-            return false;
+        private RandomizedQueue<Item> rq;
+
+        public RandomizedQueueIterator() {
+            this.rq = new RandomizedQueue<>();
+            Node node = first;
+            while (node != null) {
+                rq.enqueue(node.item);
+                node = node.next;
+            }
         }
 
         @Override
+        public boolean hasNext() { return !rq.isEmpty(); }
+
+        @Override
         public Item next() {
-            throw new NoSuchElementException();
+            if (!hasNext()) throw new NoSuchElementException();
+            return rq.dequeue();
         }
 
         @Override

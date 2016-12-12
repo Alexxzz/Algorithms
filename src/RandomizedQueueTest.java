@@ -156,6 +156,19 @@ public class RandomizedQueueTest {
         assertTrue(sut.isEmpty());
     }
 
+    @Test
+    void enqueue_dequeue_sequentionaly_x2() {
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+
+        rq.enqueue(646);
+        rq.dequeue();
+
+        rq.enqueue(198);
+        int res = rq.dequeue();
+
+        assertEquals(198, res);
+    }
+
     /**
      * Sample.
      */
@@ -213,5 +226,67 @@ public class RandomizedQueueTest {
 
         int res = sut.sample();
         assertNotEquals(1, res);
+    }
+
+    @Test
+    void testing_randomness_of_sample() {
+        StdRandom.setSeed(44);
+
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+        sut.enqueue(4);
+        sut.enqueue(5);
+
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            res.add(sut.sample());
+        }
+
+        assertTrue(res.contains(1));
+        assertTrue(res.contains(2));
+        assertTrue(res.contains(3));
+        assertTrue(res.contains(4));
+        assertTrue(res.contains(5));
+    }
+
+    @Test
+    void n_random_calls() {
+        StdRandom.setSeed(42);
+
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        for (int i = 0; i < 1024; i++) {
+            int operation = StdRandom.uniform(5);
+            switch (operation) {
+                case 0: sut.enqueue(i); break;
+                case 1: if (!sut.isEmpty()) sut.sample(); break;
+                case 2: if (!sut.isEmpty()) sut.dequeue(); break;
+                case 3: sut.isEmpty(); break;
+                case 4: sut.size(); break;
+            }
+        }
+    }
+
+    /**
+     * Iterator.
+     */
+    @Test
+    void iterator() {
+        StdRandom.setSeed(42);
+
+        RandomizedQueue<Integer> sut = new RandomizedQueue<>();
+
+        sut.enqueue(1);
+        sut.enqueue(2);
+        sut.enqueue(3);
+
+        ArrayList<Integer> res = new ArrayList<>();
+        for (Integer i: sut) {
+            res.add(i);
+        }
+
+        assertNotEquals(1, res.get(0));
     }
 }
