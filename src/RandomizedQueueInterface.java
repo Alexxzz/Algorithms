@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public interface RandomizedQueueInterface<Item> {
+public interface RandomizedQueueInterface<Item> extends Iterable<Item> {
     boolean isEmpty();                 // is the queue empty?
     int size();                        // return the number of items on the queue
     void enqueue(Item item);           // add the item

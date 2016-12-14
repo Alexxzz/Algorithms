@@ -1,25 +1,65 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ParameterContext;
+import edu.princeton.cs.algs4.StdRandom;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import edu.princeton.cs.algs4.StdRandom;
-
+import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The type Randomized queue test.
  */
+@RunWith(Parameterized.class)
 public class RandomizedQueueTest {
+    private interface RandomizedQueueFactory<Item> {
+        RandomizedQueueInterface<Item> createRandomizedQueue();
+    }
+
+    private static class ArrayRandomizedQueueFactory<Item> implements RandomizedQueueFactory {
+        @Override
+        public RandomizedQueueInterface createRandomizedQueue() {
+            return new ArrayRandomizedQueue<Item>();
+        }
+    }
+
+    private static class LinkedListRandomizedQueueFactory<Item> implements RandomizedQueueFactory {
+        @Override
+        public RandomizedQueueInterface createRandomizedQueue() {
+            return new LinkedListRandomizedQueue<Item>();
+        }
+    }
+
+    private RandomizedQueueInterface<Integer> sut;
+
+    @Parameter
+    public RandomizedQueueFactory<Integer> factory;
+
+    @Parameters
+    public static Collection<Object[]> getParameters() {
+        return Arrays.asList(new Object[][] {
+                { new ArrayRandomizedQueueFactory() },
+                { new LinkedListRandomizedQueueFactory() }
+        });
+    }
+
+    @Before
+    public void createNewQueue() {
+        sut = factory.createRandomizedQueue();
+    }
+
     /**
      * Exceptions.
      */
     @Test
-    void adding_null() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void adding_null() {
         try {
             sut.enqueue(null);
             fail("Should throw NullPointerException when adding null");
@@ -27,9 +67,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void dequeue_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void dequeue_on_empty() {
         try {
             sut.dequeue();
             fail("Should throw NoSuchElementException when dequeue from empty");
@@ -37,9 +75,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void sample_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void sample_on_empty() {
         try {
             sut.sample();
             fail("Should throw NoSuchElementException when sample from empty");
@@ -47,9 +83,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void iterator_remove() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void iterator_remove() {
         try {
             sut.iterator().remove();
             fail("Should throw UnsupportedOperationException when calling remove on iterator");
@@ -57,9 +91,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void iterator_next_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void iterator_next_on_empty() {
         try {
             sut.iterator().next();
             fail("Should throw NoSuchElementException when calling next on iterator in empty queue");
@@ -70,32 +102,24 @@ public class RandomizedQueueTest {
      * size, isEmpty().
      */
     @Test
-    void isEmpty_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void isEmpty_on_empty() {
         assertTrue(sut.isEmpty());
     }
 
     @Test
-    void size_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void size_on_empty() {
         assertEquals(0, sut.size());
     }
 
     @Test
-    void isEmpty_on_not_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void isEmpty_on_not_empty() {
         sut.enqueue(1);
 
         assertFalse(sut.isEmpty());
     }
 
     @Test
-    void size_on_not_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void size_on_not_empty() {
         assertEquals(0, sut.size());
 
         sut.enqueue(0);
@@ -110,9 +134,7 @@ public class RandomizedQueueTest {
      * Enqueue/dequeue.
      */
     @Test
-    void enqueue_dequeue_on_empty() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void enqueue_dequeue_on_empty() {
         sut.enqueue(0);
         int res = sut.dequeue();
 
@@ -120,9 +142,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void enqueue_x3_dequeue_x3() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void enqueue_x3_dequeue_x3() {
         sut.enqueue(1);
         sut.enqueue(2);
         sut.enqueue(3);
@@ -138,9 +158,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void dequeue_decreases_size() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void dequeue_decreases_size() {
         sut.enqueue(1);
         sut.enqueue(2);
         sut.enqueue(3);
@@ -160,7 +178,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void enqueue_dequeue_sequentionaly_x2() {
+    public void enqueue_dequeue_sequentionaly_x2() {
         ArrayRandomizedQueue<Integer> rq = new ArrayRandomizedQueue<>();
 
         rq.enqueue(646);
@@ -176,9 +194,7 @@ public class RandomizedQueueTest {
      * Sample.
      */
     @Test
-    void enqueue_sample() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void enqueue_sample() {
         sut.enqueue(1);
 
         int res = sut.sample();
@@ -186,9 +202,7 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void sample_does_not_removes_items() {
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
-
+    public void sample_does_not_removes_items() {
         sut.enqueue(1);
 
         int res = sut.sample();
@@ -202,11 +216,9 @@ public class RandomizedQueueTest {
      * Randomized dequeue.
      */
     @Test
-    void randomized_dequeue() {
+    public void randomized_dequeue() {
         // Should probably be a part of ArrayRandomizedQueue interface
         StdRandom.setSeed(42);
-
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
 
         sut.enqueue(1);
         sut.enqueue(2);
@@ -217,11 +229,9 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void randomized_sample() {
+    public void randomized_sample() {
         // Should probably be a part of ArrayRandomizedQueue interface
         StdRandom.setSeed(42);
-
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
 
         sut.enqueue(1);
         sut.enqueue(2);
@@ -232,10 +242,9 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void testing_randomness_of_sample() {
+    public void testing_randomness_of_sample() {
         StdRandom.setSeed(44);
 
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
         sut.enqueue(1);
         sut.enqueue(2);
         sut.enqueue(3);
@@ -255,10 +264,8 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    void n_random_calls() {
+    public void n_random_calls() {
         StdRandom.setSeed(42);
-
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
 
         for (int i = 0; i < 1024; i++) {
             int operation = StdRandom.uniform(5);
@@ -276,10 +283,8 @@ public class RandomizedQueueTest {
      * Iterator.
      */
     @Test
-    void iterator() {
+    public void iterator() {
         StdRandom.setSeed(42);
-
-        ArrayRandomizedQueue<Integer> sut = new ArrayRandomizedQueue<>();
 
         sut.enqueue(1);
         sut.enqueue(2);
