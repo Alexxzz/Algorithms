@@ -1,4 +1,6 @@
-package week3; /******************************************************************************
+package week3;
+
+/******************************************************************************
  *  Compilation:  javac week3.Point.java
  *  Execution:    java week3.Point
  *  Dependencies: none
@@ -60,9 +62,10 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         if (that.y == y && that.x == x) return Double.NEGATIVE_INFINITY;
+        if (that.y == y) return 0;
         if (that.x == x) return Double.POSITIVE_INFINITY;
 
-        return (that.y - y) / (that.x - x);
+        return (double) (that.y - y) / (double) (that.x - x);
     }
 
     /**

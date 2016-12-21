@@ -6,11 +6,32 @@ import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Created by AlexZ on 20/12/2016.
  */
 public class PointTest {
+    @Test
+    public void slopeTo_null() {
+        Point point = new Point(1, 1);
+
+        try {
+            point.slopeTo(null);
+            fail("Should throw NullPointerException when passing null");
+        } catch (NullPointerException ignored) { }
+    }
+
+    @Test
+    public void compareTo_null() {
+        Point point = new Point(1, 1);
+
+        try {
+            point.compareTo(null);
+            fail("Should throw NullPointerException when passing null");
+        } catch (NullPointerException ignored) { }
+    }
+
     /**
      * slopeTo
      */
@@ -42,6 +63,36 @@ public class PointTest {
         double slope = point1.slopeTo(point2);
 
         assertEquals(Double.NEGATIVE_INFINITY, slope);
+    }
+
+    @Test
+    public void slopeTo_negativeResult() {
+        Point point1 = new Point(400, 60);
+        Point point2 = new Point(123, 201);
+
+        double slope = point1.slopeTo(point2);
+
+        assertEquals(-0.5090252707581228, slope);
+    }
+
+    @Test
+    public void slopeTo_positiveResult() {
+        Point point1 = new Point(3810, 15735);
+        Point point2 = new Point(22622, 20919);
+
+        double slope = point1.slopeTo(point2);
+
+        assertEquals(0.2755687858813523, slope);
+    }
+
+    @Test
+    public void slopeTo_positiveZeroResult() {
+        Point point1 = new Point(405, 467);
+        Point point2 = new Point(300, 467);
+
+        double slope = point1.slopeTo(point2);
+
+        assertEquals(0, slope);
     }
 
     /**
