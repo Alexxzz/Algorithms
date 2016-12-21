@@ -1,3 +1,5 @@
+package week2;
+
 import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Before;
 import org.junit.Test;
@@ -217,7 +219,7 @@ public class RandomizedQueueTest {
      */
     @Test
     public void randomized_dequeue() {
-        // Should probably be a part of ArrayRandomizedQueue interface
+        // Should probably be a part of week2.ArrayRandomizedQueue interface
         StdRandom.setSeed(42);
 
         sut.enqueue(1);
@@ -230,7 +232,7 @@ public class RandomizedQueueTest {
 
     @Test
     public void randomized_sample() {
-        // Should probably be a part of ArrayRandomizedQueue interface
+        // Should probably be a part of week2.ArrayRandomizedQueue interface
         StdRandom.setSeed(42);
 
         sut.enqueue(1);

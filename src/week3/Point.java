@@ -1,6 +1,6 @@
-/******************************************************************************
- *  Compilation:  javac Point.java
- *  Execution:    java Point
+package week3; /******************************************************************************
+ *  Compilation:  javac week3.Point.java
+ *  Execution:    java week3.Point
  *  Dependencies: none
  *
  *  An immutable data type for points in the plane.
@@ -93,7 +93,15 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        return null;
+        return (p1, p2) -> {
+            double s1 = slopeTo(p1);
+            double s2 = slopeTo(p2);
+
+            if (s1 < s2) return -1;
+            if (s1 == s2) return 0;
+
+            return 1;
+        };
     }
 
 
@@ -110,7 +118,7 @@ public class Point implements Comparable<Point> {
     }
 
     /**
-     * Unit tests the Point data type.
+     * Unit tests the week3.Point data type.
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */

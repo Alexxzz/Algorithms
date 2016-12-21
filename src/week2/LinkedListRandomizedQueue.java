@@ -1,16 +1,27 @@
+package week2;
+
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayRandomizedQueue<Item> implements RandomizedQueueInterface<Item>, Iterable<Item> {
-    private Item[] a;
-    private int size;
+public class LinkedListRandomizedQueue<Item> implements RandomizedQueueInterface<Item>, Iterable<Item> {
+    private int size = 0;
+    private Node first, last;
+
+    private class Node {
+        private Item item;
+        private Node next;
+
+        public Node(Item element, Node next) {
+            this.item = element;
+            this.next = next;
+        }
+    }
 
     // construct an empty randomized queue
-    public ArrayRandomizedQueue() {
-        a = (Item[]) new Object[2];
-        size = 0;
+    public LinkedListRandomizedQueue() {
+
     }
 
     // is the queue empty?
@@ -27,35 +38,53 @@ public class ArrayRandomizedQueue<Item> implements RandomizedQueueInterface<Item
     public void enqueue(Item item) {
         if (item == null) throw new NullPointerException();
 
-        adjustArraySize();
+        Node newElement = new Node(item, null);
+        if (first == null) { first = newElement; }
+        else { last.next = newElement; }
+        last = newElement;
 
-        a[size++] = item;
+        size++;
     }
 
     // remove and return a random item
     public Item dequeue() {
         if (isEmpty()) throw new NoSuchElementException();
 
-        int randomIndex = StdRandom.uniform(size);
+        int randomIdx = StdRandom.uniform(size);
+        Node node = removeAt(randomIdx);
 
-        Item item = dequeuItemAt(randomIndex);
+        if (isEmpty()) {
+            first = null;
+            last = null;
+        }
+
+        return node.item;
+    }
+
+    private Node removeAt(int index) {
+        Node node = first, previous = null;
+        for (int i = 1; i <= index; i++) {
+            previous = node;
+            node = node.next;
+        }
+
+        if (previous != null) {
+            previous.next = node.next;
+
+            if (node == last) { last = previous; }
+        } else { first = node.next; }
 
         size--;
 
-        adjustArraySize();
-
-        return item;
+        return node;
     }
 
-    private Item dequeuItemAt(int randomIndex) {
-        Item item = a[randomIndex];
-        if (randomIndex == size - 1) {
-            a[randomIndex] = null;
-        } else {
-            a[randomIndex] = a[size - 1];
-            a[size - 1] = null;
+    private Node nodeAt(int index) {
+        Node node = first;
+        for (int i = 1; i <= index; i++) {
+            node = node.next;
         }
-        return item;
+        return node;
     }
 
     // return (but do not remove) a random item
@@ -64,7 +93,7 @@ public class ArrayRandomizedQueue<Item> implements RandomizedQueueInterface<Item
 
         int randomIdx = StdRandom.uniform(size);
 
-        return a[randomIdx];
+        return nodeAt(randomIdx).item;
     }
 
     // return an independent iterator over items in random order
@@ -72,29 +101,15 @@ public class ArrayRandomizedQueue<Item> implements RandomizedQueueInterface<Item
         return new RandomizedQueueIterator();
     }
 
-    private void adjustArraySize() {
-        if (size == a.length) resize(2 * a.length);
-        else if (size > 0 && size == a.length/4) resize(a.length/2);
-    }
-
-    // resize the underlying array holding the elements
-    private void resize(int capacity) {
-        assert capacity >= size;
-
-        // textbook implementation
-        Item[] temp = (Item[]) new Object[capacity];
-        for (int i = 0; i < size; i++) { temp[i] = a[i]; }
-        a = temp;
-    }
-
     private class RandomizedQueueIterator implements Iterator<Item> {
         private ArrayRandomizedQueue<Item> rq;
 
         public RandomizedQueueIterator() {
             this.rq = new ArrayRandomizedQueue<>();
-
-            for (int i = 0; i < size; i++) {
-                rq.enqueue(a[i]);
+            Node node = first;
+            while (node != null) {
+                rq.enqueue(node.item);
+                node = node.next;
             }
         }
 

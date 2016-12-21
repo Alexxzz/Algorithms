@@ -1,3 +1,5 @@
+package week2;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -5,7 +7,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The type Deque test.
+ * The type week2.Deque test.
  */
 class DequeTest {
     /**
@@ -37,7 +39,7 @@ class DequeTest {
 
         try {
             sut.removeFirst();
-            fail("Should throw NoSuchElementException when removing from empty Deque");
+            fail("Should throw NoSuchElementException when removing from empty week2.Deque");
         } catch (NoSuchElementException ignored) { }
     }
 
@@ -47,7 +49,7 @@ class DequeTest {
 
         try {
             sut.removeLast();
-            fail("Should throw NoSuchElementException when removing from empty Deque");
+            fail("Should throw NoSuchElementException when removing from empty week2.Deque");
         } catch (NoSuchElementException ignored) { }
     }
 

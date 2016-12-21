@@ -1,3 +1,5 @@
+package week2;
+
 import java.util.Iterator;
 
 public interface RandomizedQueueInterface<Item> extends Iterable<Item> {

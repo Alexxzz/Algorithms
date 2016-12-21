@@ -1,4 +1,8 @@
+package week3;
+
 import org.junit.Test;
+
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -99,6 +103,37 @@ public class PointTest {
         Point point2 = new Point(2, 2);
 
         int res = point1.compareTo(point2);
+
+        assertTrue(res > 0);
+    }
+
+    /**
+     * Slope order.
+     */
+    @Test
+    public void slopeOrder_equal() {
+        Comparator<Point> sut = new Point(1, 2).slopeOrder();
+
+        int res = sut.compare(new Point(2,3), new Point(2, 3));
+
+        assertEquals(0, res);
+    }
+
+    @Test
+    public void slopeOrder_less() {
+        Comparator<Point> sut = new Point(1, 2).slopeOrder();
+
+        int res = sut.compare(new Point(2,3), new Point(3, 8));
+
+        assertTrue(res < 0);
+    }
+
+
+    @Test
+    public void slopeOrder_greater() {
+        Comparator<Point> sut = new Point(1, 2).slopeOrder();
+
+        int res = sut.compare(new Point(2,8), new Point(3, 4));
 
         assertTrue(res > 0);
     }
