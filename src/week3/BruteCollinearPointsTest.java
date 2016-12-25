@@ -2,9 +2,14 @@ package week3;
 
 import org.junit.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class BruteCollinearPointsTest {
+    /**
+     * Corner cases.
+     */
     @Test
     public void constructor_null() {
         try {
@@ -25,5 +30,63 @@ public class BruteCollinearPointsTest {
             BruteCollinearPoints sut = new BruteCollinearPoints(points);
             fail("Should throw NullPointerException when passing array containing null");
         } catch (NullPointerException ignored) { }
+    }
+
+    @Test
+    public void numberOfSegments_one_segment() {
+        Point[] points = {
+                new Point(1, 1),
+                new Point(2, 2),
+                new Point(3, 3),
+                new Point(4, 4),
+        };
+
+        BruteCollinearPoints sut = new BruteCollinearPoints(points);
+
+        assertEquals(1, sut.numberOfSegments());
+    }
+
+    @Test
+    public void numberOfSegments_two_segments() {
+        Point[] points = {
+                new Point(10000    ,  0),
+                new Point(0,  10000),
+                new Point(3000 ,  7000),
+                new Point(7000 ,  3000),
+                new Point(20000,  21000),
+                new Point(3000 ,  4000),
+                new Point(14000,  15000),
+                new Point(6000 ,  7000),
+        };
+
+        BruteCollinearPoints sut = new BruteCollinearPoints(points);
+
+        assertEquals(2, sut.numberOfSegments());
+    }
+
+    @Test
+    public void segments() {
+        Point[] points = {
+                new Point(10000, 0),
+                new Point(8000, 2000),
+                new Point(2000, 8000),
+                new Point(0 , 10000),
+                new Point(20000, 0),
+                new Point(18000, 2000),
+                new Point(2000, 18000),
+                new Point(10000, 20000),
+                new Point(30000, 0),
+                new Point(0, 30000),
+                new Point(20000, 10000),
+                new Point(13000, 0),
+                new Point(11000, 3000),
+                new Point(5000, 12000),
+                new Point(9000, 6000),
+        };
+
+        BruteCollinearPoints sut = new BruteCollinearPoints(points);
+
+        assertTrue(sut.segments()[0] != null);
+        assertTrue(sut.segments()[1] != null);
     }
 }
