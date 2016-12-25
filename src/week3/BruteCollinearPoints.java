@@ -9,8 +9,13 @@ public class BruteCollinearPoints {
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null || containsNull(points)) throw new NullPointerException();
+        if (containsDuplicates(points)) throw new IllegalArgumentException();
 
         segments = new ArrayList<>();
+        findSegments(points);
+    }
+
+    private void findSegments(Point[] points) {
         boolean[] usedPointsIdxs = new boolean[points.length];
 
         for (int i = 0; i < points.length; i++) {
@@ -49,6 +54,18 @@ public class BruteCollinearPoints {
                 }
             }
         }
+    }
+
+    private boolean containsDuplicates(Point[] points) {
+        for (int i = 0; i < points.length; i++) {
+            Point p = points[i];
+            for (int j = 0; j < points.length; j++) {
+                if (i == j) continue;;
+                Point p2 = points[j];
+                if (p.compareTo(p2) == 0) return true;
+            }
+        }
+        return false;
     }
 
     private boolean containsNull(Point[] points) {

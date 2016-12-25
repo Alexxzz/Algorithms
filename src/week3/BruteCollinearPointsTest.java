@@ -33,6 +33,19 @@ public class BruteCollinearPointsTest {
     }
 
     @Test
+    public void constructor_duplicate_points() {
+        Point[] points = {
+                new Point(1, 1),
+                new Point(1, 1),
+                new Point(2, 2),
+        };
+        try {
+            BruteCollinearPoints sut = new BruteCollinearPoints(points);
+            fail("Should throw IllegalArgumentException when passing array containing duplicate points");
+        } catch (IllegalArgumentException ignored) { }
+    }
+
+    @Test
     public void numberOfSegments_one_segment() {
         Point[] points = {
                 new Point(1, 1),
@@ -46,6 +59,10 @@ public class BruteCollinearPointsTest {
         assertEquals(1, sut.numberOfSegments());
     }
 
+
+    /**
+     * Finding the segments.
+     */
     @Test
     public void numberOfSegments_two_segments() {
         Point[] points = {
@@ -65,7 +82,7 @@ public class BruteCollinearPointsTest {
     }
 
     @Test
-    public void segments() {
+    public void numberOfSegments_and_segments_is_consistent() {
         Point[] points = {
                 new Point(10000, 0),
                 new Point(8000, 2000),
@@ -88,5 +105,7 @@ public class BruteCollinearPointsTest {
 
         assertTrue(sut.segments()[0] != null);
         assertTrue(sut.segments()[1] != null);
+
+        assertEquals(sut.numberOfSegments(), sut.segments().length);
     }
 }
