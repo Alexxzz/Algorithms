@@ -43,11 +43,10 @@ public class BruteCollinearPoints {
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
         if (points == null) throw new NullPointerException();
+        if (containsDuplicates(points)) throw new IllegalArgumentException();
 
         ArrayList<Point> pointArrayList = new ArrayList<>(Arrays.asList(points));
         if (pointArrayList.contains(null)) throw new NullPointerException();
-
-        if (containsDuplicates(points)) throw new IllegalArgumentException();
 
         segments = new ArrayList<>();
         pointsPairs = new ArrayList<>();
