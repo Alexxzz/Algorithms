@@ -45,6 +45,9 @@ public class BruteCollinearPointsTest {
         } catch (IllegalArgumentException ignored) { }
     }
 
+    /**
+     * Finding the segments.
+     */
     @Test
     public void numberOfSegments_one_segment() {
         Point[] points = {
@@ -57,12 +60,9 @@ public class BruteCollinearPointsTest {
         BruteCollinearPoints sut = new BruteCollinearPoints(points);
 
         assertEquals(1, sut.numberOfSegments());
+        assertEquals("(1, 1) -> (4, 4)", sut.segments()[0].toString());
     }
 
-
-    /**
-     * Finding the segments.
-     */
     @Test
     public void numberOfSegments_two_segments() {
         Point[] points = {
@@ -70,6 +70,7 @@ public class BruteCollinearPointsTest {
                 new Point(0,  10000),
                 new Point(3000 ,  7000),
                 new Point(7000 ,  3000),
+
                 new Point(20000,  21000),
                 new Point(3000 ,  4000),
                 new Point(14000,  15000),
@@ -79,6 +80,8 @@ public class BruteCollinearPointsTest {
         BruteCollinearPoints sut = new BruteCollinearPoints(points);
 
         assertEquals(2, sut.numberOfSegments());
+        assertEquals("(10000, 0) -> (0, 10000)", sut.segments()[0].toString());
+        assertEquals("(3000, 4000) -> (20000, 21000)", sut.segments()[1].toString());
     }
 
     @Test
@@ -88,13 +91,16 @@ public class BruteCollinearPointsTest {
                 new Point(8000, 2000),
                 new Point(2000, 8000),
                 new Point(0 , 10000),
+
                 new Point(20000, 0),
                 new Point(18000, 2000),
                 new Point(2000, 18000),
+
                 new Point(10000, 20000),
                 new Point(30000, 0),
                 new Point(0, 30000),
                 new Point(20000, 10000),
+
                 new Point(13000, 0),
                 new Point(11000, 3000),
                 new Point(5000, 12000),
@@ -107,5 +113,35 @@ public class BruteCollinearPointsTest {
         assertTrue(sut.segments()[1] != null);
 
         assertEquals(sut.numberOfSegments(), sut.segments().length);
+        assertEquals(4, sut.numberOfSegments());
+    }
+
+    @Test
+    public void equidistant() {
+        Point[] points = {
+                new Point(10000, 0),
+                new Point(8000, 2000),
+                new Point(2000, 8000),
+                new Point(0, 10000),
+
+                new Point(20000, 0),
+                new Point(18000, 2000),
+                new Point(2000, 18000),
+
+                new Point(10000, 20000),
+                new Point(30000, 0),
+                new Point(0, 30000),
+                new Point(20000, 10000),
+
+                new Point(13000, 0),
+                new Point(11000, 3000),
+                new Point(5000, 12000),
+                new Point(9000, 6000),
+        };
+
+        BruteCollinearPoints sut = new BruteCollinearPoints(points);
+
+        LineSegment[] segs = sut.segments();
+
     }
 }
