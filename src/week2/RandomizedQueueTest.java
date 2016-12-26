@@ -22,24 +22,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(Parameterized.class)
 public class RandomizedQueueTest {
     private interface RandomizedQueueFactory<Item> {
-        RandomizedQueueInterface<Item> createRandomizedQueue();
+        RandomizedQueue<Item> createRandomizedQueue();
     }
 
     private static class ArrayRandomizedQueueFactory<Item> implements RandomizedQueueFactory {
         @Override
-        public RandomizedQueueInterface createRandomizedQueue() {
+        public RandomizedQueue createRandomizedQueue() {
             return new ArrayRandomizedQueue<Item>();
         }
     }
 
     private static class LinkedListRandomizedQueueFactory<Item> implements RandomizedQueueFactory {
         @Override
-        public RandomizedQueueInterface createRandomizedQueue() {
+        public RandomizedQueue createRandomizedQueue() {
             return new LinkedListRandomizedQueue<Item>();
         }
     }
 
-    private RandomizedQueueInterface<Integer> sut;
+    private RandomizedQueue<Integer> sut;
 
     @Parameter
     public RandomizedQueueFactory<Integer> factory;

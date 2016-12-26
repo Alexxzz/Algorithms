@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedListRandomizedQueue<Item> implements RandomizedQueueInterface<Item>, Iterable<Item> {
+public class LinkedListRandomizedQueue<Item> implements RandomizedQueue<Item>, Iterable<Item> {
     private int size = 0;
     private Node first, last;
 

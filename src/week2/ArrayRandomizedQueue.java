@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayRandomizedQueue<Item> implements RandomizedQueueInterface<Item>, Iterable<Item> {
+public class ArrayRandomizedQueue<Item> implements RandomizedQueue<Item>, Iterable<Item> {
     private Item[] a;
     private int size;
 
