@@ -2,6 +2,8 @@ package week4;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BoardTest {
     @Test
@@ -72,5 +74,51 @@ public class BoardTest {
         int manhattan = sut.manhattan();
 
         assertEquals(21, manhattan);
+    }
+
+    /**
+     * Is goal
+     */
+    @Test
+    public void isGoal_Board_is_Not_at_goal_state() {
+        final int[][] board = {
+                {8, 6, 7},
+                {2, 5, 4},
+                {3, 0, 1}
+        };
+        Board sut = new Board(board);
+
+        assertFalse(sut.isGoal());
+    }
+
+    @Test
+    public void isGoal_Board_is_at_Goal_state() {
+        final int[][] board = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 0}
+        };
+        Board sut = new Board(board);
+
+        assertTrue(sut.isGoal());
+    }
+
+    /**
+     * To string
+     */
+    @Test
+    public void toString_2x2() {
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        String expected =
+                "2\n" +
+                " 1  0 \n" +
+                " 3  2 ";
+
+        assertEquals(expected, sut.toString());
     }
 }

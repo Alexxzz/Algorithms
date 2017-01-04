@@ -58,7 +58,7 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return false;
+        return hamming() == 0;
     }
 
     // a board that is obtained by exchanging any pair of blocks
@@ -78,7 +78,17 @@ public class Board {
 
     // string representation of this board (in the output format specified below)
     public String toString() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(dimension);
+
+        for (int i = 0; i < dimension; i++) {
+            sb.append("\n");
+            for (int j = 0; j < dimension; j++) {
+                sb.append(" ").append(blocks[i][j]).append(" ");
+            }
+        }
+
+        return sb.toString();
     }
 
     // unit tests (not graded)
