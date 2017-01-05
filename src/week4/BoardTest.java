@@ -121,4 +121,23 @@ public class BoardTest {
 
         assertEquals(expected, sut.toString());
     }
+
+    /**
+     * Neighbors
+     */
+    @Test
+    public void neighbors_2x2() {
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        int neighborsCount = 0;
+        for (Board b: sut.neighbors()) {
+            neighborsCount++;
+        }
+
+        assertEquals(2, neighborsCount);
+    }
 }

@@ -1,5 +1,9 @@
 package week4;
 
+import edu.princeton.cs.algs4.Queue;
+
+import java.util.Iterator;
+
 /**
  * Created by AlexZ on 02/01/2017.
  */
@@ -73,7 +77,43 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return null;
+        Queue<Board> neighbors = new Queue<>();
+
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                int b = blocks[i][j];
+                if (b == 0) {
+                    Board newBoard1 = createBoardExchanging(i, j, i+1, j);
+                    Board newBoard2 = createBoardExchanging(i, j, i-1, j);
+                    Board newBoard3 = createBoardExchanging(i, j, i, j+1);
+                    Board newBoard4 = createBoardExchanging(i, j, i, j-1);
+
+                    if (newBoard1 != null) neighbors.enqueue(newBoard1);
+                    if (newBoard2 != null) neighbors.enqueue(newBoard2);
+                    if (newBoard3 != null) neighbors.enqueue(newBoard3);
+                    if (newBoard4 != null) neighbors.enqueue(newBoard4);
+
+                    return neighbors;
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    private Board createBoardExchanging(int i, int j, int i1, int j1) {
+        if (coordinateIsOutOfDimensions(i1) || coordinateIsOutOfDimensions(j1)) return null;
+
+        int[][] newBlocks = blocks.clone();
+
+        newBlocks[i][j] = blocks[i1][j1];
+        newBlocks[i1][j1] = blocks[i][j];
+
+        return new Board(newBlocks);
+    }
+
+    private boolean coordinateIsOutOfDimensions(int coord) {
+        return coord >= dimension || coord < 0;
     }
 
     // string representation of this board (in the output format specified below)
