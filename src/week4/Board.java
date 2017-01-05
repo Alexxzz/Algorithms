@@ -1,8 +1,9 @@
 package week4;
 
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdRandom;
 
-import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Created by AlexZ on 02/01/2017.
@@ -14,8 +15,8 @@ public class Board {
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
+        this.blocks = cloneArray(blocks);
         dimension = blocks.length;
-        this.blocks = blocks;
     }
 
     // board dimension n
@@ -67,12 +68,25 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        return null;
+        int i = StdRandom.uniform(dimension);
+        int j = StdRandom.uniform(dimension);
+
+        int i1 = StdRandom.uniform(dimension);
+        int j1 = StdRandom.uniform(dimension);
+
+        if (blocks[i][j] == 0 || blocks[i1][j1] == 0) return twin();
+        if (i == i1 && j == j1) return twin();
+
+        return createBoardExchanging(i, j, i1, j1);
     }
 
     // does this board equal y?
-    public boolean equals(Object y) {
-        return false;
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other == null) return false;
+        if (other.getClass() != this.getClass()) return false;
+        Board that = (Board) other;
+        return Objects.equals(this.toString(), that.toString());
     }
 
     // all neighboring boards
@@ -102,9 +116,10 @@ public class Board {
     }
 
     private Board createBoardExchanging(int i, int j, int i1, int j1) {
-        if (coordinateIsOutOfDimensions(i1) || coordinateIsOutOfDimensions(j1)) return null;
+        if (coordinateIsOutOfDimensions(i) || coordinateIsOutOfDimensions(j) ||
+                coordinateIsOutOfDimensions(i1) || coordinateIsOutOfDimensions(j1)) return null;
 
-        int[][] newBlocks = blocks.clone();
+        int[][] newBlocks = cloneArray(blocks);
 
         newBlocks[i][j] = blocks[i1][j1];
         newBlocks[i1][j1] = blocks[i][j];
@@ -134,5 +149,14 @@ public class Board {
     // unit tests (not graded)
     public static void main(String[] args) {
 
+    }
+
+    private static int[][] cloneArray(int[][] src) {
+        int length = src.length;
+        int[][] target = new int[length][src[0].length];
+        for (int i = 0; i < length; i++) {
+            System.arraycopy(src[i], 0, target[i], 0, src[i].length);
+        }
+        return target;
     }
 }

@@ -1,11 +1,30 @@
 package week4;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 public class BoardTest {
+    /**
+     * Immutability.
+     */
+    @Test
+    public void immutability() {
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        board[0][1] = 9;
+
+        assertEquals(1, sut.hamming());
+    }
+
+    /**
+     * Dimension.
+     */
     @Test
     public void dimension() {
         final int n = 10;
@@ -14,6 +33,21 @@ public class BoardTest {
         int dimension = sut.dimension();
 
         assertEquals(n, dimension);
+    }
+
+    /**
+     * Equals.
+     */
+    @Test
+    public void equals() {
+        final int[][] array = {
+                {1, 0},
+                {3, 2}
+        };
+        Board board1 = new Board(array);
+        Board board2 = new Board(array);
+
+        assertEquals(board1, board2);
     }
 
     /**
@@ -139,5 +173,53 @@ public class BoardTest {
         }
 
         assertEquals(2, neighborsCount);
+    }
+
+    /**
+     * Twin
+     */
+    @Test
+    public void twin_2x2() {
+        StdRandom.setSeed(41);
+
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        Board twin = sut.twin();
+
+        assertNotEquals(sut.toString(), twin.toString());
+    }
+
+    @Test
+    public void twin_2x2_should_not_the_same_block() {
+        StdRandom.setSeed(42); // seed where ij=1,0 and i1j1 = 1,0
+
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        Board twin = sut.twin();
+
+        assertNotEquals(sut.toString(), twin.toString());
+    }
+
+    @Test
+    public void twin_2x2_should_not_exchange_0() {
+        StdRandom.setSeed(40); // seed where one of the exchange blocks is 0
+
+        final int[][] board = {
+                {1, 0},
+                {3, 2}
+        };
+        Board sut = new Board(board);
+
+        Board twin = sut.twin();
+
+        assertNotEquals(sut.toString(), twin.toString());
     }
 }
