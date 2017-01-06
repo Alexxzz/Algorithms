@@ -39,7 +39,7 @@ public class BoardTest {
      * Equals.
      */
     @Test
-    public void equals() {
+    public void equals_should_equal() {
         final int[][] array = {
                 {1, 0},
                 {3, 2}
@@ -48,6 +48,31 @@ public class BoardTest {
         Board board2 = new Board(array);
 
         assertEquals(board1, board2);
+    }
+
+    @Test
+    public void equals_compare_to_string() {
+        final int n = 10;
+        Board sut = new Board(new int[n][n]);
+
+        assertNotEquals(sut, "test");
+    }
+
+    @Test
+    public void equals_compare_to_null() {
+        final int n = 10;
+        Board sut = new Board(new int[n][n]);
+
+        assertNotEquals(sut, null);
+    }
+
+    @Test
+    public void equals_compare_to_board_of_different_dimension() {
+        final int n = 10;
+        Board board1 = new Board(new int[n][n]);
+        Board board2 = new Board(new int[n+1][n+1]);
+
+        assertNotEquals(board1, board2);
     }
 
     /**
