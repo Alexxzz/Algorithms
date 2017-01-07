@@ -33,13 +33,18 @@ public class Board {
                 int b = blocks[i][j];
                 if (b == 0) continue;
 
-                int expected = (i * dimension + j) + 1;
-                if (b != expected) hamming++;
+                if (!isBlockAtPlace(b, i, j)) hamming++;
             }
         }
 
         return hamming;
     }
+
+    private boolean isBlockAtPlace(int b, int i, int j) {
+        int expected = (i * dimension + j) + 1;
+        return b == expected;
+    }
+
 
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
@@ -68,6 +73,8 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
+        if (dimension == 0) return null;
+
         int i = StdRandom.uniform(dimension);
         int j = StdRandom.uniform(dimension);
 
@@ -76,6 +83,7 @@ public class Board {
 
         if (blocks[i][j] == 0 || blocks[i1][j1] == 0) return twin();
         if (i == i1 && j == j1) return twin();
+        if (isBlockAtPlace(blocks[i][j], i, j) && isBlockAtPlace(blocks[i1][j1], i1, j1)) return twin();
 
         return createBoardExchanging(i, j, i1, j1);
     }
@@ -152,6 +160,8 @@ public class Board {
     }
 
     private static int[][] cloneArray(int[][] src) {
+        if (src.length == 0) return null;
+
         int length = src.length;
         int[][] target = new int[length][src[0].length];
         for (int i = 0; i < length; i++) {

@@ -204,6 +204,16 @@ public class BoardTest {
      * Twin
      */
     @Test
+    public void twin_0x0() {
+        StdRandom.setSeed(41);
+
+        final int[][] board = {};
+        Board sut = new Board(board);
+
+        assertEquals(null, sut.twin());
+    }
+
+    @Test
     public void twin_2x2() {
         StdRandom.setSeed(41);
 
