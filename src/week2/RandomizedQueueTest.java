@@ -42,7 +42,7 @@ public class RandomizedQueueTest {
     private RandomizedQueue<Integer> sut;
 
     @Parameter
-    public RandomizedQueueFactory<Integer> factory;
+    private RandomizedQueueFactory<Integer> factory;
 
     @Parameters
     public static Collection<Object[]> getParameters() {
