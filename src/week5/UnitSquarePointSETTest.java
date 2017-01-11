@@ -31,7 +31,7 @@ public class UnitSquarePointSETTest {
     public static Collection<Object[]> getParameters() {
         return Arrays.asList(new Object[][] {
                 {(UnitSquarePointSETFactory) PointSET::new},
-//                {(UnitSquarePointSETFactory) KdTree::new}
+                {(UnitSquarePointSETFactory) KdTree::new}
         });
     }
 
@@ -124,12 +124,35 @@ public class UnitSquarePointSETTest {
     }
 
     @Test
+    public void size_afterThreeInsert() {
+        sut.insert(new Point2D(1, 2));
+        sut.insert(new Point2D(2, 3));
+        sut.insert(new Point2D(3, 4));
+
+        assertEquals(3, sut.size());
+    }
+
+    @Test
     public void contains_afterOneInsert() {
         Point2D p = new Point2D(1, 2);
 
         sut.insert(p);
 
         assertTrue(sut.contains(p));
+    }
+
+    @Test
+    public void contains_afterThreeInsert() {
+        Point2D p1 = new Point2D(1, 2);
+        Point2D p2 = new Point2D(2, 3);
+        Point2D p3 = new Point2D(3, 4);
+
+        sut.insert(p1);
+        sut.insert(p2);
+        sut.insert(p3);
+
+        assertTrue(sut.contains(p2));
+        assertFalse(sut.contains(new Point2D(10, 10)));
     }
 
     /**
