@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import week3.Point;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -88,18 +89,18 @@ public class UnitSquarePointSETTest {
 
     @Test
     public void contains_emptySet() {
-        assertFalse(sut.contains(new Point2D(1, 2)));
+        assertFalse(sut.contains(new Point2D(0.1, 0.2)));
     }
 
     @Test
     public void nearest_emptySet() {
-        assertEquals(null, sut.nearest(new Point2D(1, 2)));
+        assertEquals(null, sut.nearest(new Point2D(0.1, 0.2)));
     }
 
     @Test
     public void range_emptySet() {
         int pointsCount = 0;
-        for (Point2D p: sut.range(new RectHV(1, 2, 3, 4))) {
+        for (Point2D p: sut.range(new RectHV(0.1, 0.2, 0.3, 0.4))) {
             pointsCount++;
         }
 
@@ -111,30 +112,30 @@ public class UnitSquarePointSETTest {
      */
     @Test
     public void isEmpty_afterOneInsert() {
-        sut.insert(new Point2D(1, 2));
+        sut.insert(new Point2D(0.1, 0.2));
 
         assertFalse(sut.isEmpty());
     }
 
     @Test
     public void size_afterOneInsert() {
-        sut.insert(new Point2D(1, 2));
+        sut.insert(new Point2D(0.1, 0.2));
 
         assertEquals(1, sut.size());
     }
 
     @Test
     public void size_afterThreeInsert() {
-        sut.insert(new Point2D(1, 2));
-        sut.insert(new Point2D(2, 3));
-        sut.insert(new Point2D(3, 4));
+        sut.insert(new Point2D(0.1, 0.2));
+        sut.insert(new Point2D(0.2, 0.3));
+        sut.insert(new Point2D(0.3, 0.4));
 
         assertEquals(3, sut.size());
     }
 
     @Test
     public void contains_afterOneInsert() {
-        Point2D p = new Point2D(1, 2);
+        Point2D p = new Point2D(0.1, 0.2);
 
         sut.insert(p);
 
@@ -143,16 +144,16 @@ public class UnitSquarePointSETTest {
 
     @Test
     public void contains_afterThreeInsert() {
-        Point2D p1 = new Point2D(1, 2);
-        Point2D p2 = new Point2D(2, 3);
-        Point2D p3 = new Point2D(3, 4);
+        Point2D p1 = new Point2D(0.1, 0.2);
+        Point2D p2 = new Point2D(0.3, 0.4);
+        Point2D p3 = new Point2D(0.5, 0.6);
 
         sut.insert(p1);
         sut.insert(p2);
         sut.insert(p3);
 
         assertTrue(sut.contains(p2));
-        assertFalse(sut.contains(new Point2D(10, 10)));
+        assertFalse(sut.contains(new Point2D(1, 1)));
     }
 
     /**
@@ -170,6 +171,43 @@ public class UnitSquarePointSETTest {
         }
 
         assertTrue(pointInRange);
+    }
+
+    @Test
+    public void range_10Points() {
+        Point2D p1 = new Point2D(0.206107, 0.095492);
+        Point2D p2 = new Point2D(0.975528, 0.654508);
+        Point2D p3 = new Point2D(0.024472, 0.345492);
+        Point2D p4 = new Point2D(0.793893, 0.095492);
+        Point2D p5 = new Point2D(0.793893, 0.904508);
+        Point2D p6 = new Point2D(0.975528, 0.345492);
+        Point2D p7 = new Point2D(0.206107, 0.904508);
+        Point2D p8 = new Point2D(0.500000, 0.000000);
+        Point2D p9 = new Point2D(0.024472, 0.654508);
+        Point2D p10 = new Point2D(0.500000, 1.000000);
+
+        sut.insert(p1);
+        sut.insert(p2);
+        sut.insert(p3);
+        sut.insert(p4);
+        sut.insert(p5);
+        sut.insert(p6);
+        sut.insert(p7);
+        sut.insert(p8);
+        sut.insert(p9);
+        sut.insert(p10);
+
+        ArrayList<Point2D> pointsInRange = new ArrayList<>();
+        for (Point2D point: sut.range(new RectHV(0.14, 0.74, 0.9, 1))) {
+            pointsInRange.add(point);
+        }
+
+        ArrayList<Point2D> expected = new ArrayList<>();
+        expected.add(p5);
+        expected.add(p7);
+        expected.add(p10);
+
+        assertTrue(expected.containsAll(pointsInRange));
     }
 
     @Test
