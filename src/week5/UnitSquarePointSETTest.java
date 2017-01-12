@@ -134,6 +134,17 @@ public class UnitSquarePointSETTest {
     }
 
     @Test
+    public void size_afterFiveInsertWithDoubles() {
+        sut.insert(new Point2D(0.1, 0.2));
+        sut.insert(new Point2D(0.2, 0.3));
+        sut.insert(new Point2D(0.3, 0.4));
+        sut.insert(new Point2D(0.2, 0.3));
+        sut.insert(new Point2D(0.1, 0.2));
+
+        assertEquals(3, sut.size());
+    }
+
+    @Test
     public void contains_afterOneInsert() {
         Point2D p = new Point2D(0.1, 0.2);
 

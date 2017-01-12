@@ -2,8 +2,6 @@ package week5;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdDraw;
-import sun.awt.util.IdentityArrayList;
 
 import java.util.ArrayList;
 
@@ -44,12 +42,13 @@ public class KdTree implements UnitSquarePointSET  {
         if (p == null) throw new NullPointerException();
 
         root = put(root, p, true, new RectHV(0, 0, 1, 1));
-
-        size++;
     }
 
     private Node put(Node h, Point2D p, boolean isVertical, RectHV rect) {
-        if (h == null) return new Node(p, rect);
+        if (h == null) {
+            size++;
+            return new Node(p, rect);
+        }
 
         RectHV lSubRect = new RectHV(rect.xmin(), rect.ymin(), p.x(), rect.ymax());
         RectHV rSubRect = new RectHV(p.x(), rect.ymin(), rect.xmax(), rect.ymax());

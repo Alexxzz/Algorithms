@@ -1,6 +1,10 @@
 package week5;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;
 
@@ -39,7 +43,7 @@ public class PointSET implements UnitSquarePointSET {
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
 
-        for (Point2D p: set) {
+        for(Point2D p: set) {
             StdDraw.point(p.x(), p.y());
         }
     }
