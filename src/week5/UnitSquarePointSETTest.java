@@ -135,13 +135,13 @@ public class UnitSquarePointSETTest {
 
     @Test
     public void size_afterFiveInsertWithDoubles() {
-        sut.insert(new Point2D(0.1, 0.2));
+        sut.insert(new Point2D(0.1, 0.3));
         sut.insert(new Point2D(0.2, 0.3));
         sut.insert(new Point2D(0.3, 0.4));
         sut.insert(new Point2D(0.2, 0.3));
         sut.insert(new Point2D(0.1, 0.2));
 
-        assertEquals(3, sut.size());
+        assertEquals(4, sut.size());
     }
 
     @Test
@@ -165,6 +165,46 @@ public class UnitSquarePointSETTest {
 
         assertTrue(sut.contains(p2));
         assertFalse(sut.contains(new Point2D(1, 1)));
+    }
+
+    @Test
+    public void contains_after10Insert() {
+        Point2D p1 = new Point2D(0.206107, 0.095492);
+        Point2D p2 = new Point2D(0.975528, 0.654508);
+        Point2D p3 = new Point2D(0.024472, 0.345492);
+        Point2D p4 = new Point2D(0.793893, 0.095492);
+        Point2D p5 = new Point2D(0.793893, 0.904508);
+        Point2D p6 = new Point2D(0.975528, 0.345492);
+        Point2D p7 = new Point2D(0.206107, 0.904508);
+        Point2D p8 = new Point2D(0.500000, 0.000000);
+        Point2D p9 = new Point2D(0.024472, 0.654508);
+        Point2D p10 = new Point2D(0.500000, 1.000000);
+
+        sut.insert(p1);
+        sut.insert(p2);
+        sut.insert(p3);
+        sut.insert(p4);
+        sut.insert(p5);
+        sut.insert(p6);
+        sut.insert(p7);
+        sut.insert(p8);
+        sut.insert(p9);
+        sut.insert(p10);
+
+        assertTrue(sut.contains(p1));
+        assertTrue(sut.contains(p2));
+        assertTrue(sut.contains(p3));
+        assertTrue(sut.contains(p4));
+        assertTrue(sut.contains(p5));
+        assertTrue(sut.contains(p6));
+        assertTrue(sut.contains(p7));
+        assertTrue(sut.contains(p8));
+        assertTrue(sut.contains(p9));
+        assertTrue(sut.contains(p10));
+
+        assertFalse(sut.contains(new Point2D(1, 1)));
+        assertFalse(sut.contains(new Point2D(0.965528, 0.694508)));
+        assertFalse(sut.contains(new Point2D(0.50000, 0.000010)));
     }
 
     /**
@@ -235,6 +275,9 @@ public class UnitSquarePointSETTest {
         assertFalse(pointInRange);
     }
 
+    /**
+     * Nearest
+     */
     @Test
     public void nearest_threePoints() {
         Point2D p1 = new Point2D(0.5, 0.5);
@@ -245,6 +288,35 @@ public class UnitSquarePointSETTest {
         sut.insert(p2);
         sut.insert(p3);
 
-        assertEquals(p2, sut.nearest(new Point2D(0.6, 0.6)));
+        Point2D res = sut.nearest(new Point2D(0.6, 0.6));
+        assertEquals(p2, res);
+    }
+
+    @Test
+    public void nearest_10Points() {
+        Point2D p1 = new Point2D(0.206107, 0.095492);
+        Point2D p2 = new Point2D(0.975528, 0.654508);
+        Point2D p3 = new Point2D(0.024472, 0.345492);
+        Point2D p4 = new Point2D(0.793893, 0.095492);
+        Point2D p5 = new Point2D(0.793893, 0.904508);
+        Point2D p6 = new Point2D(0.975528, 0.345492);
+        Point2D p7 = new Point2D(0.206107, 0.904508);
+        Point2D p8 = new Point2D(0.500000, 0.000000);
+        Point2D p9 = new Point2D(0.024472, 0.654508);
+        Point2D p10 = new Point2D(0.500000, 1.000000);
+
+        sut.insert(p1);
+        sut.insert(p2);
+        sut.insert(p3);
+        sut.insert(p4);
+        sut.insert(p5);
+        sut.insert(p6);
+        sut.insert(p7);
+        sut.insert(p8);
+        sut.insert(p9);
+        sut.insert(p10);
+
+        Point2D res = sut.nearest(new Point2D(1, 1));
+        assertEquals(p5, res);
     }
 }

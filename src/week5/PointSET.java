@@ -43,7 +43,7 @@ public class PointSET implements UnitSquarePointSET {
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
 
-        for(Point2D p: set) {
+        for (Point2D p: set) {
             StdDraw.point(p.x(), p.y());
         }
     }
