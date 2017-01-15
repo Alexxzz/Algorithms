@@ -6,16 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import week3.Point;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(Parameterized.class)
 public class UnitSquarePointSETTest {
@@ -253,12 +250,10 @@ public class UnitSquarePointSETTest {
             pointsInRange.add(point);
         }
 
-        ArrayList<Point2D> expected = new ArrayList<>();
-        expected.add(p5);
-        expected.add(p7);
-        expected.add(p10);
-
-        assertTrue(expected.containsAll(pointsInRange));
+        assertEquals(3, pointsInRange.size());
+        assertTrue(pointsInRange.contains(p5));
+        assertTrue(pointsInRange.contains(p7));
+        assertTrue(pointsInRange.contains(p10));
     }
 
     @Test

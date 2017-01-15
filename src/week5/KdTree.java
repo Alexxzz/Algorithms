@@ -53,34 +53,34 @@ public class KdTree implements UnitSquarePointSET {
     }
 
     private Node put(Node h, Point2D p, boolean isVertical, RectHV rect) {
-        if (h == null) { return new Node(p, rect); }
+        if (h == null) return new Node(p, rect);
 
-        RectHV lSubRect = new RectHV(rect.xmin(), rect.ymin(), p.x(), rect.ymax());
-        RectHV rSubRect = new RectHV(p.x(), rect.ymin(), rect.xmax(), rect.ymax());
+        RectHV lSubRect = new RectHV(rect.xmin(), rect.ymin(), h.p.x(), rect.ymax());
+        RectHV rSubRect = new RectHV(h.p.x(), rect.ymin(), rect.xmax(), rect.ymax());
 
-        RectHV bSubRect = new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), p.y());
-        RectHV tSubRect = new RectHV(rect.xmin(), p.y(), rect.xmax(), rect.ymax());
+        RectHV bSubRect = new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), h.p.y());
+        RectHV tSubRect = new RectHV(rect.xmin(), h.p.y(), rect.xmax(), rect.ymax());
 
         RectHV lbSubRect = isVertical ? lSubRect : bSubRect;
         RectHV rtSubRect = isVertical ? rSubRect : tSubRect;
 
-        double cmp = compare(p, h.p, isVertical);
-        if (cmp < 0) {
-            h.lb = put(h.lb, p, !isVertical, lbSubRect);
-        } else {
-            h.rt = put(h.rt, p, !isVertical, rtSubRect);
-        }
+        int cmp = compare(p, h.p, isVertical);
+        if (cmp < 0) h.lb = put(h.lb, p, !isVertical, lbSubRect);
+        else if (cmp > 0) h.rt = put(h.rt, p, !isVertical, rtSubRect);
+        else h.p = p;
 
         h.size = 1 + size(h.lb) + size(h.rt);
         return h;
     }
 
-    private double compare(Point2D p, Point2D toP, boolean isVertical) {
+    private int compare(Point2D p, Point2D toP, boolean isVertical) {
         if (p.equals(toP)) return 0;
 
-        double res;
+        int res;
         if (isVertical) res = Double.compare(p.x(), toP.x());
         else res = Double.compare(p.y(), toP.y());
+
+        if (res == 0) res = 1;
 
         return res;
     }
@@ -118,7 +118,9 @@ public class KdTree implements UnitSquarePointSET {
     private void collectPointsInRect(Node h, RectHV rect, ArrayList<Point2D> res) {
         if (h == null) return;
 
-        if (rect.contains(h.p)) res.add(h.p);
+        if (rect.contains(h.p)) {
+            res.add(h.p);
+        }
 
         if (h.lb != null && rect.intersects(h.lb.rect)) collectPointsInRect(h.lb, rect, res);
         if (h.rt != null && rect.intersects(h.rt.rect)) collectPointsInRect(h.rt, rect, res);
@@ -136,12 +138,15 @@ public class KdTree implements UnitSquarePointSET {
 
         double nearestDist = n.distanceTo(p);
 
-        double lpDist = x.lb != null ? x.lb.p.distanceTo(p) : Double.MAX_VALUE;
-        double rpDist = x.rt != null ? x.rt.p.distanceTo(p) : Double.MAX_VALUE;
+        double lpDist = Double.MAX_VALUE;
+        double rpDist = Double.MAX_VALUE;
+        if (x.lb != null) lpDist = x.lb.rect.distanceTo(p);
+        if (x.rt != null) rpDist = x.rt.rect.distanceTo(p);
 
         Node minNode = null;
-        if (Math.min(nearestDist, Math.min(lpDist, rpDist)) == lpDist) minNode = x.lb;
-        else if (Math.min(nearestDist, Math.min(lpDist, rpDist)) == rpDist) minNode = x.rt;
+        double minDist = Math.min(nearestDist, Math.min(lpDist, rpDist));
+        if (Double.compare(minDist, lpDist) == 0) minNode = x.lb;
+        else if (Double.compare(minDist, rpDist) == 0) minNode = x.rt;
 
         if (minNode != null) return nearest(minNode, p, minNode.p);
 
@@ -163,7 +168,12 @@ public class KdTree implements UnitSquarePointSET {
             brute.insert(p);
         }
 
+        Iterable<Point2D> p = kdtree.range(new RectHV(0, 0, 1, 1));
+
         StdOut.println("brute.size() " + brute.size());
         StdOut.println("kdtree.size() " + kdtree.size());
+
+        StdOut.println("brute.nearest() " + brute.nearest(new Point2D(1, 1)));
+        StdOut.println("kdtree.nearest() " + kdtree.nearest(new Point2D(1, 1)));
     }
 }
