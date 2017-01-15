@@ -136,19 +136,20 @@ public class KdTree implements UnitSquarePointSET {
     private Point2D nearest(Node x, Point2D p, Point2D n) {
         if (x == null) return n;
 
-        double nearestDist = n.distanceTo(p);
+        double nearestDistance = n.distanceSquaredTo(p);
+        if (nearestDistance >= x.rect.distanceSquaredTo(p)) {
+            if (x.p.distanceSquaredTo(p) < nearestDistance) {
+                n = x.p;
+            }
 
-        double lpDist = Double.MAX_VALUE;
-        double rpDist = Double.MAX_VALUE;
-        if (x.lb != null) lpDist = x.lb.rect.distanceTo(p);
-        if (x.rt != null) rpDist = x.rt.rect.distanceTo(p);
-
-        Node minNode = null;
-        double minDist = Math.min(nearestDist, Math.min(lpDist, rpDist));
-        if (Double.compare(minDist, lpDist) == 0) minNode = x.lb;
-        else if (Double.compare(minDist, rpDist) == 0) minNode = x.rt;
-
-        if (minNode != null) return nearest(minNode, p, minNode.p);
+            if (x.rt != null && x.rt.rect.contains(p)) {
+                n = nearest(x.rt, p, n);
+                n = nearest(x.lb, p, n);
+            } else {
+                n = nearest(x.lb, p, n);
+                n = nearest(x.rt, p, n);
+            }
+        }
 
         return n;
     }
